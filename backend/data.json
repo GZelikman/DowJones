@@ -1,1 +1,16 @@
-"{\"name\": \"Long Dong\", \"min\":\"5.00\", \"max\":\"10.00\", \"akt\":\"5.00\", type=\"cocktail\"}"
+{"drinks" :[
+        {
+            "type": "cocktail",
+            "name": "Long Dong",
+            "price": 5.00,
+            "min":5.00,
+            "max": 10.00
+        },
+        {
+            "type": "cocktail",
+            "name": "Barca",
+            "price": 5.00,
+            "min":5.00,
+            "max": 10.00
+        }
+    ]}
