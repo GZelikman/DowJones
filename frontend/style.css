@@ -1,0 +1,87 @@
+
+.grid {
+    width: 100%;
+    display: grid;
+    display: inline-grid;
+    grid-template-columns: [line1] 25% [line2] 25% [line3] 25% [line4] 25% [end];
+    grid-template-rows: [row1-start] 10% [row1-end] 90% [third-line];
+}
+
+#h2cocktail{
+    grid-column-start: 1;
+    grid-column-end: span 1;
+    grid-row-start: 0;
+    grid-row-end: span 1;
+}
+
+#h2beer{
+    grid-column-start: 2;
+    grid-column-end: span 1;
+    grid-row-start: 0;
+    grid-row-end: span 1;
+}
+
+#shots{
+    grid-column-start: 3;
+    grid-column-end: span 1;
+    grid-row-start: 0;
+    grid-row-end: span 1;
+}
+
+#h2nonAlcoholic{
+    grid-column-start: 4;
+    grid-column-end: span 1;
+    grid-row-start: 0;
+    grid-row-end: span 1;
+}
+
+.boxAroundList{
+    grid-column-start: 1;
+    grid-column-end: span 4;
+    grid-row-start: 2;
+    grid-row-end: span 1;
+    width: 100%;
+    display: grid;
+    display: inline-grid;
+    grid-template-columns: [line1] 25% [line2] 25% [line3] 25% [line4] 25% [end];
+    border: solid black 2px;
+    border-radius: 10px; 
+    background-color: black;
+    color: white;
+}
+
+#cocktail{
+    grid-column-start: 1;
+    grid-column-end: span 1;
+    grid-row-start: 2;
+    grid-row-end: span 1;
+    padding-left: 10px;
+    list-style: none;
+}
+
+#beer{
+    grid-column-start: 2;
+    grid-column-end: span 1;
+    grid-row-start: 2;
+    grid-row-end: span 1;
+    padding-left: 10px;
+    list-style: none;
+}
+
+#shots{
+    grid-column-start: 3;
+    grid-column-end: span 1;
+    grid-row-start: 2;
+    grid-row-end: span 1;
+    padding-left: 10px;
+    list-style: none;
+}
+
+#nonAlcoholic{
+    grid-column-start: 4;
+    grid-column-end: span 1;
+    grid-row-start: 2;
+    grid-row-end: span 1;
+    padding-left: 10px;
+    list-style: none;
+}
