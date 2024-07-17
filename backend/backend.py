@@ -22,21 +22,19 @@ async def sendPrices():
         data = json.load(f)
     return data
 
-class Buy(BaseModel):
-    drink: str
-
 @app.post("/buyDrinks")
-async def buyDrinks(buy: Buy):
-    print(buy.drink)
-    logging.error(buy.drink)
-    '''
+async def buyDrinks(request: Request):
+    buying = await request.json()
     print(buying["drink"], buying["price"])
     with open('data.json', 'r') as f:
         data = json.load(f)
     for i in data["drinks"]:
         if i["name"] == buying["drink"]:
-            i["price"] += (0.25 * buying["amount"])
+            i["change"] = "up"
+            if i["price"] + (0.25 * buying["amount"]) < 10:
+                i["price"] += (0.25 * buying["amount"])
+            else:
+                i["price"] = 10.00
     with open('data.json', 'w') as f:
         json.dump(data, f)
-    '''
-    return buy
+    return data

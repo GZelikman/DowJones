@@ -41,6 +41,7 @@
     grid-row-start: 2;
     grid-row-end: span 1;
     width: 100%;
+    height: 100%;
     display: grid;
     display: inline-grid;
     grid-template-columns: [line1] 25% [line2] 25% [line3] 25% [line4] 25% [end];
@@ -50,6 +51,13 @@
     color: white;
 }
 
+li{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
 #cocktail{
     grid-column-start: 1;
     grid-column-end: span 1;
@@ -57,6 +65,7 @@
     grid-row-end: span 1;
     padding-left: 10px;
     list-style: none;
+    
 }
 
 #beer{
@@ -85,3 +94,13 @@
     padding-left: 10px;
     list-style: none;
 }
+
+[data-browser="down"]::after {
+    content: " ⇩";
+    color: red;
+  }
+
+  [data-browser="up"]::after {
+    content: " ⇧";
+    color: green;
+  }
