@@ -11,16 +11,16 @@ $(setInterval(function(){
         softdrinks = "";
         for (var i = 0; i < response["drinks"].length; i++) {
             if (response["drinks"][i]["type"] == "cocktail"){
-                cocktails += "<li onClick=\"buyDrinks(\'" + response["drinks"][i]["name"] + "\'," + response["drinks"][i]["price"] + ")\">" + response["drinks"][i]["name"] + " - " + response["drinks"][i]["price"] + "€" + "</li>";
+                cocktails += "<li onClick=\"showPopup(\'" + response["drinks"][i]["name"] + "\'," + response["drinks"][i]["price"].toFixed(2) + ")\">" + response["drinks"][i]["name"] + " - " + response["drinks"][i]["price"].toFixed(2) + "€" + "</li>";
             }
             else if (response["drinks"][i]["type"] == "beer"){
-                beer += "<li>" + response["drinks"][i]["name"] + " - " + response["drinks"][i]["price"] + "€" + "</li>";
+                beer += "<li>" + response["drinks"][i]["name"] + " - " + response["drinks"][i]["price"].toFixed(2) + "€" + "</li>";
             }
             else if (response["drinks"][i]["type"] == "shots"){
-                shots += "<li>" + response["drinks"][i]["name"] + " - " + response["drinks"][i]["price"] + "€" + "</li>";
+                shots += "<li>" + response["drinks"][i]["name"] + " - " + response["drinks"][i]["price"].toFixed(2) + "€" + "</li>";
             }
             else if (response["drinks"][i]["type"] == "softdrinks"){
-                softdrinks += "<li>" + response["drinks"][i]["name"] + " - " + response["drinks"][i]["price"] + "€" + "</li>";
+                softdrinks += "<li>" + response["drinks"][i]["name"] + " - " + response["drinks"][i]["price"].toFixed(2) + "€" + "</li>";
             }
         }
         document.getElementById("cocktail").innerHTML = cocktails;
@@ -33,6 +33,55 @@ $(setInterval(function(){
 }, 1000));
 
 var buyDrinks = function(value1,value2) {
-    console.log(value1);
-    console.log(value2);
+    console.log(value1, value2.toFixed(2));
+
+    $.ajax({
+        url: 'http://localhost:7999/buyDrinks',
+        type: 'post',
+        data: {
+            drink: value1,
+            price: value2.toFixed(2)
+        },
+        contentType: 'application/json; charset=utf-8',
+        processData: false,
+        contentType: false,
+    }).done(function (response) {
+        console.log("Api call worked", response);
+    }).fail(function (error) {
+        console.log(error);
+    })
 };
+
+const inputValue = 1
+
+function showPopup(value1,value2) {
+    Swal.fire({
+        title: value1 + " - " + value2.toFixed(2) + "€",
+        text: "How many do you want to Order?",
+        input: 'range',
+        inputValue,
+        inputAttributes: {
+            min: '1',
+            max: '10',
+        },
+        showCancelButton: true,
+        confirmButtonText: "Order",
+        showCloseButton: true,
+        preConfirm: async (amount) => {
+            console.log(value1, value2.toFixed(2), amount);
+
+            $.ajax({
+                url: 'http://localhost:7999/buyDrinks',
+                type: 'post',
+                data: JSON.stringify({
+                    "drink": String(value1),
+                }),
+            }).done(function (response) {
+                console.log("Api call worked", response);
+            }).fail(function (error) {
+                console.log(error);
+            })
+        }
+    });
+
+}
