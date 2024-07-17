@@ -1,5 +1,4 @@
-$(function(){
-    document.getElementById('cocktail').innerHTML = "Loading...";
+$(setInterval(function(){
     $.ajax({
         url: 'http://127.0.0.1:7999/',
         type: 'get',
@@ -12,7 +11,7 @@ $(function(){
         softdrinks = "";
         for (var i = 0; i < response["drinks"].length; i++) {
             if (response["drinks"][i]["type"] == "cocktail"){
-                cocktails += "<li>" + response["drinks"][i]["name"] + " - " + response["drinks"][i]["price"] + "€" + "</li>";
+                cocktails += "<li onClick=\"buyDrinks(\'" + response["drinks"][i]["name"] + "\'," + response["drinks"][i]["price"] + ")\">" + response["drinks"][i]["name"] + " - " + response["drinks"][i]["price"] + "€" + "</li>";
             }
             else if (response["drinks"][i]["type"] == "beer"){
                 beer += "<li>" + response["drinks"][i]["name"] + " - " + response["drinks"][i]["price"] + "€" + "</li>";
@@ -31,4 +30,9 @@ $(function(){
     }).fail(function (error) {
         console.log(error);
     });
-});
+}, 1000));
+
+var buyDrinks = function(value1,value2) {
+    console.log(value1);
+    console.log(value2);
+};
