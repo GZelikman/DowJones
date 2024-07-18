@@ -16,17 +16,23 @@ $(setInterval(function(){
                 up = "down";
                 color = "red";
             }
+            var backspace = "";
+            for (var j = 0; j < (20 -response["drinks"][i]["name"].length); j++) {
+                backspace += "&nbsp;";
+            }
+            drink = response["drinks"][i]["name"] + backspace;
+            console.log(drink)
             if (response["drinks"][i]["type"] == "cocktail"){
-                cocktails += "<li onClick=\"showPopup(\'" + response["drinks"][i]["name"] + "\'," + response["drinks"][i]["price"].toFixed(2) + ")\"><div data-browser=\"" + up + "\" >" + response["drinks"][i]["name"] + "  <span class=\"" + color + "\">" + response["drinks"][i]["price"].toFixed(2) + "€</span></div></li>";
+                cocktails += "<li onClick=\"showPopup(\'" + response["drinks"][i]["name"] + "\'," + response["drinks"][i]["price"].toFixed(2) + ")\"><div data-browser=\"" + up + "\" >" + drink + "  <span class=\"" + color + "\">" + response["drinks"][i]["price"].toFixed(2) + "€</span></div></li>";
             }
             else if (response["drinks"][i]["type"] == "beer"){
-                beer += "<li onClick=\"showPopup(\'" + response["drinks"][i]["name"] + "\'," + response["drinks"][i]["price"].toFixed(2) + ")\"><div data-browser=\"" + up + "\" >" + response["drinks"][i]["name"] + "  <span class=\"" + color + "\">" + response["drinks"][i]["price"].toFixed(2) + "€</span></div></li>";
+                beer += "<li onClick=\"showPopup(\'" + response["drinks"][i]["name"] + "\'," + response["drinks"][i]["price"].toFixed(2) + ")\"><div data-browser=\"" + up + "\" >" + drink + "  <span class=\"" + color + "\">" + response["drinks"][i]["price"].toFixed(2) + "€</span></div></li>";
             }
             else if (response["drinks"][i]["type"] == "shots"){
-                shots += "<li onClick=\"showPopup(\'" + response["drinks"][i]["name"] + "\'," + response["drinks"][i]["price"].toFixed(2) + ")\"><div data-browser=\"" + up + "\" >" + response["drinks"][i]["name"] + "  <span class=\"" + color + "\">" + response["drinks"][i]["price"].toFixed(2) + "€</span></div></li>";
+                shots += "<li onClick=\"showPopup(\'" + response["drinks"][i]["name"] + "\'," + response["drinks"][i]["price"].toFixed(2) + ")\"><div data-browser=\"" + up + "\" >" + drink + "  <span class=\"" + color + "\">" + response["drinks"][i]["price"].toFixed(2) + "€</span></div></li>";
             }
             else if (response["drinks"][i]["type"] == "softdrinks"){
-                softdrinks += "<li onClick=\"showPopup(\'" + response["drinks"][i]["name"] + "\'," + response["drinks"][i]["price"].toFixed(2) + ")\"><div data-browser=\"" + up + "\" >" + response["drinks"][i]["name"] + "  <span class=\"" + color + "\">" + response["drinks"][i]["price"].toFixed(2) + "€</span></div></li>";
+                softdrinks += "<li onClick=\"showPopup(\'" + response["drinks"][i]["name"] + "\'," + response["drinks"][i]["price"].toFixed(2) + ")\"><div data-browser=\"" + up + "\" >" + drink + "  <span class=\"" + color + "\">" + response["drinks"][i]["price"].toFixed(2) + "€</span></div></li>";
             }
         }
         document.getElementById("cocktail").innerHTML = cocktails;
@@ -36,7 +42,7 @@ $(setInterval(function(){
     }).fail(function (error) {
         console.log(error);
     });
-}, 1000));
+}, 2000));
 
 var buyDrinks = function(value1,value2) {
     console.log(value1, value2.toFixed(2));

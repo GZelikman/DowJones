@@ -10,6 +10,7 @@
     background-color: black;
     color: white;
     height: 100%;
+    font-family: monospace, monospace;
 }
 
 #h2cocktail{
@@ -93,12 +94,12 @@ li{
 }
 
 [data-browser="down"]::after {
-    content: " ⇩";
+    content: " ⇓";
     color: red;
 }
 
 [data-browser="up"]::after {
-    content: " ⇧";
+    content: " ⇑";
     color: rgb(7, 204, 7);
 }
 
