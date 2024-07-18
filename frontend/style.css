@@ -95,9 +95,17 @@ li{
 [data-browser="down"]::after {
     content: " ⇩";
     color: red;
-  }
+}
 
-  [data-browser="up"]::after {
+[data-browser="up"]::after {
     content: " ⇧";
     color: rgb(7, 204, 7);
-  }
+}
+
+.red{
+    color: red;
+}
+
+.green{
+    color: rgb(7, 204, 7);
+}
