@@ -4,13 +4,17 @@
     display: grid;
     display: inline-grid;
     grid-template-columns: [line1] 25% [line2] 25% [line3] 25% [line4] 25% [end];
-    grid-template-rows: [row1-start] 10% [row1-end] 90% [third-line];
+    grid-template-rows: [row1-start] 10% [row1-end] 80% [third-line] 10% [end];
     border: solid black 2px;
     border-radius: 10px; 
     background-color: black;
     color: white;
     height: 100%;
     font-family: monospace, monospace;
+}
+
+body{
+    background-color: rgb(36, 36, 36);
 }
 
 #h2cocktail{
@@ -110,3 +114,26 @@ li{
 .green{
     color: rgb(7, 204, 7);
 }
+
+#information{
+    grid-column-start: 1;
+    grid-column-end: span 4;
+    grid-row-start: 3;
+    grid-row-end: span 1;
+    color: red;
+    position: relative;
+    animation: move-words 10s linear infinite;
+    margin: 0;
+}
+
+@keyframes move-words {
+    0% {
+        left: 0;
+      }
+      50% {
+        left: 50%;
+      }
+      100% {
+        left: 0;    
+      }
+  }

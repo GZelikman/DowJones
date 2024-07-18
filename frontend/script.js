@@ -35,6 +35,16 @@ $(setInterval(function(){
                 softdrinks += "<li onClick=\"showPopup(\'" + response["drinks"][i]["name"] + "\'," + response["drinks"][i]["price"].toFixed(2) + ")\"><div data-browser=\"" + up + "\" >" + drink + "  <span class=\"" + color + "\">" + response["drinks"][i]["price"].toFixed(2) + "€</span></div></li>";
             }
         }
+        var zaehler = 0
+        for (var i = 0; i < response["drinks"].length; i++) {
+            if (response["drinks"][i]["min"] != response["drinks"][i]["price"]){
+                zaehler += 1
+                document.getElementById("information").innerHTML = "";
+            }
+        }
+        if (zaehler == 0){
+            document.getElementById("information").innerHTML = "Market Crash! Market Crash! Market Crash!";
+        }
         document.getElementById("cocktail").innerHTML = cocktails;
         document.getElementById("beer").innerHTML = beer;
         document.getElementById("shots").innerHTML = shots;

@@ -61,7 +61,7 @@ def isMarketCrash(data, amount):
     with open('backendSpeicher.json', 'r') as f:
         buyedDrinks = json.load(f)
     buyedDrinks["buyedDrinks"] += amount
-    if buyedDrinks["buyedDrinks"] > 50:
+    if buyedDrinks["buyedDrinks"] >= 50:
         for i in data["drinks"]:
             i["change"] = "down"
             i["price"] = i["min"]
@@ -70,7 +70,7 @@ def isMarketCrash(data, amount):
         json.dump(buyedDrinks, f)
     return data
 
-rt = RepeatedTimer(30, randPriceChange)
+rt = RepeatedTimer(120, randPriceChange)
 
 app = FastAPI()
 
