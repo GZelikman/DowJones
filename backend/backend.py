@@ -46,7 +46,6 @@ def updatePrices(data, change):
 
 
 def randPriceChange():
-    print("Hi")
     with open('data.json', 'r') as f:
         data = json.load(f)
     for i in data["drinks"]:
@@ -57,6 +56,19 @@ def randPriceChange():
             i = updatePrices(i, -0.10)
     with open('data.json', 'w') as f:
         json.dump(data, f)
+
+def isMarketCrash(data, amount):
+    with open('backendSpeicher.json', 'r') as f:
+        buyedDrinks = json.load(f)
+    buyedDrinks["buyedDrinks"] += amount
+    if buyedDrinks["buyedDrinks"] > 50:
+        for i in data["drinks"]:
+            i["change"] = "down"
+            i["price"] = i["min"]
+        buyedDrinks["buyedDrinks"] = 0
+    with open('backendSpeicher.json', 'w') as f:
+        json.dump(buyedDrinks, f)
+    return data
 
 rt = RepeatedTimer(30, randPriceChange)
 
@@ -80,7 +92,6 @@ async def sendPrices():
 @app.post("/buyDrinks")
 async def buyDrinks(request: Request):
     buying = await request.json()
-    print(buying["drink"], buying["price"])
     with open('data.json', 'r') as f:
         data = json.load(f)
     typeDrink = ""
@@ -89,9 +100,10 @@ async def buyDrinks(request: Request):
             typeDrink = i["type"]
     for i in data["drinks"]:
         if i["name"] == buying["drink"]:
-            updatePrices(i, 0.25)
+            updatePrices(i, (0.25 * buying["amount"]))
         elif i["type"] == typeDrink:
-            updatePrices(i, -0.10)
+            updatePrices(i, (-0.10 * buying["amount"]))
+    data = isMarketCrash(data, buying["amount"])
     with open('data.json', 'w') as f:
         json.dump(data, f)
     return data
