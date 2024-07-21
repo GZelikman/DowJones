@@ -1,33 +1,28 @@
 import json
 from fastapi import FastAPI, Request
 from starlette.middleware.cors import CORSMiddleware
-from threading import Timer
+import threading, time
 import random
+import sys
 
-class RepeatedTimer(object):
-    def __init__(self, interval, function, *args, **kwargs):
-        self._timer     = None
-        self.interval   = interval
-        self.function   = function
-        self.args       = args
-        self.kwargs     = kwargs
-        self.is_running = False
-        self.start()
+class reqthread(threading.Thread):
+    def __init__(self,sleep):
+        threading.Thread.__init__(self)
+        self.sleep = sleep
 
-    def _run(self):
-        self.is_running = False
-        self.start()
-        self.function(*self.args, **self.kwargs)    
-
-    def start(self):
-        if not self.is_running:
-            self._timer = Timer(self.interval, self._run)
-            self._timer.start()
-            self.is_running = True
-
-    def stop(self):
-        self._timer.cancel()
-        self.is_running = False
+    def run(self):
+        while True:
+            with open('data.json', 'r') as f:
+                data = json.load(f)
+            for i in data["drinks"]:
+                rand = random.randint(1,3)
+                if rand == 1 or rand == 2:
+                    i = updatePrices(i, 0.25)
+                else:
+                    i = updatePrices(i, -0.25)
+            with open('data.json', 'w') as f:
+                json.dump(data, f)
+            time.sleep(self.sleep)
 
 def updatePrices(data, change):
     if change > 0:
@@ -70,8 +65,11 @@ def isMarketCrash(data, amount):
         json.dump(buyedDrinks, f)
     return data
 try:
-    rt = RepeatedTimer(60, randPriceChange)
+    thread = reqthread(60)
+    thread.daemon = True
+    thread.start()
 except KeyboardInterrupt:
+    print("hi")
 
 app = FastAPI()
 
@@ -81,8 +79,8 @@ app.add_middleware(
     allow_credentials=True,
     allow_methods = ["*"],
     allow_headers = ["*"],
-    expose_headers=["*"]
-)
+        expose_headers=["*"]
+    )
 
 @app.get("/")
 async def sendPrices():
