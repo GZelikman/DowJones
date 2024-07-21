@@ -3,7 +3,7 @@ from fastapi import FastAPI, Request
 from starlette.middleware.cors import CORSMiddleware
 import threading, time
 import random
-import sys
+import math
 
 class reqthread(threading.Thread):
     def __init__(self,sleep):
@@ -15,14 +15,19 @@ class reqthread(threading.Thread):
             with open('data.json', 'r') as f:
                 data = json.load(f)
             for i in data["drinks"]:
-                rand = random.randint(1,3)
+                rand = random.randint(1,5)
                 if rand == 1 or rand == 2:
-                    i = updatePrices(i, 0.25)
+                    i = updatePrices(i, (rand *0.25))
+                elif rand == 3 or rand == 4:
+                    i = updatePrices(i, (math.floor(rand // 2) * -0.25))
                 else:
-                    i = updatePrices(i, -0.25)
+                    i = updatePrices(i, 0)
             with open('data.json', 'w') as f:
                 json.dump(data, f)
             time.sleep(self.sleep)
+
+    def sleep(self, sleep):
+        self.sleep = sleep
 
 def updatePrices(data, change):
     if change > 0:
@@ -52,15 +57,18 @@ def randPriceChange():
     with open('data.json', 'w') as f:
         json.dump(data, f)
 
-def isMarketCrash(data, amount):
+def isMarketCrash(data, amount, thread):
     with open('backendSpeicher.json', 'r') as f:
         buyedDrinks = json.load(f)
     buyedDrinks["buyedDrinks"] += amount
     if buyedDrinks["buyedDrinks"] >= 50:
+        thread.stop()
         for i in data["drinks"]:
             i["change"] = "down"
             i["price"] = i["min"]
         buyedDrinks["buyedDrinks"] = 0
+        thread.sleep(120)
+        thread.start(60)
     with open('backendSpeicher.json', 'w') as f:
         json.dump(buyedDrinks, f)
     return data
@@ -102,7 +110,8 @@ async def buyDrinks(request: Request):
             updatePrices(i, (0.25 * buying["amount"]))
         elif i["type"] == typeDrink:
             updatePrices(i, (-0.10 * buying["amount"]))
-    data = isMarketCrash(data, buying["amount"])
+    print(thread)
+    data = isMarketCrash(data, buying["amount"], thread)
     with open('data.json', 'w') as f:
         json.dump(data, f)
     return data
