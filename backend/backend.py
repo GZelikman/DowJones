@@ -49,11 +49,11 @@ def randPriceChange():
     with open('data.json', 'r') as f:
         data = json.load(f)
     for i in data["drinks"]:
-        rand = random.randint(1,2)
-        if rand == 1:
-            i = updatePrices(i, 0.10)
+        rand = random.randint(1,3)
+        if rand == 1 or rand == 2:
+            i = updatePrices(i, 0.25)
         else:
-            i = updatePrices(i, -0.10)
+            i = updatePrices(i, -0.25)
     with open('data.json', 'w') as f:
         json.dump(data, f)
 
@@ -69,8 +69,9 @@ def isMarketCrash(data, amount):
     with open('backendSpeicher.json', 'w') as f:
         json.dump(buyedDrinks, f)
     return data
-
-rt = RepeatedTimer(120, randPriceChange)
+try:
+    rt = RepeatedTimer(60, randPriceChange)
+except KeyboardInterrupt:
 
 app = FastAPI()
 
