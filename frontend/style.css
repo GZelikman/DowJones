@@ -122,7 +122,7 @@ li{
     white-space: nowrap;
     position: absolute;
     color: red;
-    animation: move-words 10s linear infinite;
+    animation: move-words 15s linear infinite;
     margin: 0;
 }
 

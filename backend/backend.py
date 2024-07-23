@@ -31,7 +31,6 @@ class reqthread(threading.Thread):
             else:
                 time.sleep(120)
                 with open('backendSpeicher.json', 'w') as f1:
-                    zs = json.load(f1)
                     zs["marketCrash"] = 0
                     json.dump(zs, f1)
 
