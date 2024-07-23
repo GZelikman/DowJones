@@ -12,66 +12,85 @@ class reqthread(threading.Thread):
 
     def run(self):
         while True:
-            with open('data.json', 'r') as f:
-                data = json.load(f)
-            for i in data["drinks"]:
-                rand = random.randint(1,5)
-                if rand == 1 or rand == 2:
-                    i = updatePrices(i, (rand *0.25))
-                elif rand == 3 or rand == 4:
-                    i = updatePrices(i, (math.floor(rand // 2) * -0.25))
-                else:
-                    i = updatePrices(i, 0)
-            with open('data.json', 'w') as f:
-                json.dump(data, f)
-            time.sleep(self.sleep)
-
-    def sleep(self, sleep):
-        self.sleep = sleep
+            with open('backendSpeicher.json', 'r') as f1:
+                zs = json.load(f1)
+            if zs["marketCrash"] == 0:
+                with open('data.json', 'r') as f:
+                    data = json.load(f)
+                for i in data["drinks"]:
+                    rand = random.randint(1,5)
+                    if rand == 1 or rand == 2:
+                        i = updatePrices(i, (rand *0.25))
+                    elif rand == 3 or rand == 4:
+                        i = updatePrices(i, (math.floor(rand // 2) * -0.25))
+                    else:
+                        i = updatePrices(i, 0)
+                with open('data.json', 'w') as f:
+                    json.dump(data, f)
+                time.sleep(self.sleep)
+            else:
+                time.sleep(120)
+                with open('backendSpeicher.json', 'w') as f1:
+                    zs = json.load(f1)
+                    zs["marketCrash"] = 0
+                    json.dump(zs, f1)
 
 def updatePrices(data, change):
-    if change > 0:
-        data["change"] = "up"
-        if data["price"] + change < data["max"]:
-            data["price"] += change
+    with open('backendSpeicher.json', 'r') as f:
+        zs = json.load(f)
+    if zs["marketCrash"] == 0:
+        if change > 0:
+            data["change"] = "up"
+            if data["price"] + change < data["max"]:
+                data["price"] += change
+            else:
+                data["price"] = data["max"]
         else:
-            data["price"] = data["max"]
+            data["change"] = "down"
+            if data["price"] + change > data["min"]:
+                data["price"] += change
+            else:
+                data["price"] = data["min"]
+        return data
     else:
         data["change"] = "down"
-        if data["price"] + change > data["min"]:
-            data["price"] += change
-        else:
-            data["price"] = data["min"]
-    return data
+        data["price"] = data["min"]
+        return data
 
 
 def randPriceChange():
-    with open('data.json', 'r') as f:
-        data = json.load(f)
-    for i in data["drinks"]:
-        rand = random.randint(1,3)
-        if rand == 1 or rand == 2:
-            i = updatePrices(i, 0.25)
-        else:
-            i = updatePrices(i, -0.25)
-    with open('data.json', 'w') as f:
-        json.dump(data, f)
+    with open('backendSpeicher.json', 'r') as f1:
+        zs = json.load(f1)
+    if zs["marketCrash"] == 0:
+        with open('data.json', 'r') as f:
+            data = json.load(f)
+        for i in data["drinks"]:
+            rand = random.randint(1,3)
+            if rand == 1 or rand == 2:
+                i = updatePrices(i, 0.25)
+            else:
+                i = updatePrices(i, -0.25)
+        with open('data.json', 'w') as f:
+            json.dump(data, f)
+    else:
+        data["change"] = "down"
+        data["price"] = data["min"]
+        return data
 
-def isMarketCrash(data, amount, thread):
+def isMarketCrash(data, amount):
     with open('backendSpeicher.json', 'r') as f:
         buyedDrinks = json.load(f)
     buyedDrinks["buyedDrinks"] += amount
     if buyedDrinks["buyedDrinks"] >= 50:
-        thread.stop()
         for i in data["drinks"]:
             i["change"] = "down"
             i["price"] = i["min"]
         buyedDrinks["buyedDrinks"] = 0
-        thread.sleep(120)
-        thread.start(60)
+        buyedDrinks["marketCrash"] = 1
     with open('backendSpeicher.json', 'w') as f:
         json.dump(buyedDrinks, f)
     return data
+
 try:
     thread = reqthread(60)
     thread.daemon = True
@@ -110,8 +129,7 @@ async def buyDrinks(request: Request):
             updatePrices(i, (0.25 * buying["amount"]))
         elif i["type"] == typeDrink:
             updatePrices(i, (-0.10 * buying["amount"]))
-    print(thread)
-    data = isMarketCrash(data, buying["amount"], thread)
+    data = isMarketCrash(data, buying["amount"])
     with open('data.json', 'w') as f:
         json.dump(data, f)
     return data
