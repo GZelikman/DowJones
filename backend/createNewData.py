@@ -3,6 +3,9 @@ import json
 with open('data.json', 'r') as f:
     data = json.load(f)
 
+with open('prices.json', 'r') as f:
+    prices = json.load(f)
+
 what = input("brink prices back to default? (y/n): ")
 if what == "y":
     for i in data["drinks"]:
