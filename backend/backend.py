@@ -42,35 +42,19 @@ def updatePrices(data, change):
             data["change"] = "up"
             if data["price"] + change < data["max"]:
                 data["price"] += change
+                updatePriceArr(data["name"], data["price"])
             else:
                 data["price"] = data["max"]
+                updatePriceArr(data["name"], data["price"])
         else:
             data["change"] = "down"
             if data["price"] + change > data["min"]:
                 data["price"] += change
+                updatePriceArr(data["name"], data["price"])
             else:
                 data["price"] = data["min"]
+                updatePriceArr(data["name"], data["price"])
         return data
-    else:
-        data["change"] = "down"
-        data["price"] = data["min"]
-        return data
-
-
-def randPriceChange():
-    with open('backendSpeicher.json', 'r') as f1:
-        zs = json.load(f1)
-    if zs["marketCrash"] == 0:
-        with open('data.json', 'r') as f:
-            data = json.load(f)
-        for i in data["drinks"]:
-            rand = random.randint(1,3)
-            if rand == 1 or rand == 2:
-                i = updatePrices(i, 0.25)
-            else:
-                i = updatePrices(i, -0.25)
-        with open('data.json', 'w') as f:
-            json.dump(data, f)
     else:
         data["change"] = "down"
         data["price"] = data["min"]
@@ -86,11 +70,23 @@ def isMarketCrash(data, amount):
         for i in data["drinks"]:
             i["change"] = "down"
             i["price"] = i["min"]
+            updatePriceArr(i["name"], i["price"])
         buyedDrinks["buyedDrinks"] = 0
         buyedDrinks["marketCrash"] = 1
     with open('backendSpeicher.json', 'w') as f:
         json.dump(buyedDrinks, f)
     return data
+
+def updatePriceArr(name, newPrice):
+    with open('prices.json', 'r') as f:
+        prices = json.load(f)
+    for i in prices["prices"]:
+        for key in i:
+            if key == name:
+                i[key].pop(0)
+                i[key].append(newPrice)
+    with open('prices.json', 'w') as f:
+        json.dump(prices, f)
 
 try:
     thread = reqthread(60)
@@ -115,6 +111,16 @@ async def sendPrices():
     with open('data.json', 'r') as f:
         data = json.load(f)
     return data
+
+@app.post("/getPricesOfName")
+async def getPricesOfName(request: Request):
+    name = await request.json()
+    with open('prices.json', 'r') as f:
+        prices = json.load(f)
+    for i in prices["prices"]:
+        for key in i:
+            if key == name["drink"]:
+                return i[key]
 
 @app.post("/buyDrinks")
 async def buyDrinks(request: Request):

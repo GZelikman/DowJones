@@ -77,35 +77,70 @@ var buyDrinks = function(value1,value2) {
 const inputValue = 1
 
 function showPopup(value1,value2) {
-    Swal.fire({
-        title: value1 + " - " + value2.toFixed(2) + "€",
-        text: "How many do you want to Order?",
-        input: 'range',
-        inputValue,
-        inputAttributes: {
-            min: '1',
-            max: '10',
-        },
-        showCancelButton: true,
-        confirmButtonText: "Order",
-        showCloseButton: true,
-        preConfirm: async (amount) => {
-            console.log(value1, value2.toFixed(2), amount);
-
-            $.ajax({
-                url: 'http://localhost:7999/buyDrinks',
-                type: 'post',
-                data: JSON.stringify({
-                    "drink": String(value1),
-                    "price": value2.toFixed(2),
-                    "amount": Number(amount)
-                }),
-            }).done(function (response) {
-                console.log("Api call worked", response);
-            }).fail(function (error) {
-                console.log(error);
-            })
-        }
-    });
-
+    $.ajax({
+        url: 'http://localhost:7999/getPricesOfName',
+        type: 'post',
+        data: JSON.stringify({
+            "drink": String(value1),
+        }),
+    }).done(function (response) {
+        console.log("Got prices from Server", response);
+        const yValues = response
+        const xValues = [9,8,7,6,5,4,3,2,1,0]
+        console.log(yValues, xValues);
+        var test = new Chart("myChart", {
+            type: "line",
+            data: {
+              labels: xValues,
+              datasets: [{
+                fill: false,
+                lineTension: 0,
+                backgroundColor: "rgba(0,0,255,1.0)",
+                borderColor: "rgba(0,0,255,0.1)",
+                data: yValues
+              }]
+            },
+            options: {
+              legend: {display: false},
+              scales: {
+                yAxes: [{ticks: {min: 0, max:10}}],
+              }
+            }
+          });
+            var insert = document.createElement("canvas");
+            insert.id = "myChart";
+            insert.innerHTML = test;
+        Swal.fire({
+            title: value1 + " - " + value2.toFixed(2) + "€",
+            html: insert,
+            input: 'range',
+            inputValue,
+            inputAttributes: {
+                min: '1',
+                max: '10',
+            },
+            showCancelButton: true,
+            confirmButtonText: "Order",
+            showCloseButton: true,
+            preConfirm: async (amount) => {
+                console.log(value1, value2.toFixed(2), amount);
+    
+                $.ajax({
+                    url: 'http://localhost:7999/buyDrinks',
+                    type: 'post',
+                    data: JSON.stringify({
+                        "drink": String(value1),
+                        "price": value2.toFixed(2),
+                        "amount": Number(amount)
+                    }),
+                }).done(function (response) {
+                    console.log("Api call worked", response);
+                }).fail(function (error) {
+                    console.log(error);
+                })
+            }
+        });
+    }).fail(function (error) {
+        console.log(error);
+    })
 }
