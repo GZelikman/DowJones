@@ -116,24 +116,21 @@ li{
 }
 
 #information{
-    grid-column-start: 1;
-    grid-column-end: span 4;
-    grid-row-start: 3;
+    grid-row-start: 2;
     grid-row-end: span 1;
+    overflow: hidden;
+    white-space: nowrap;
+    position: absolute;
     color: red;
-    position: relative;
     animation: move-words 10s linear infinite;
     margin: 0;
 }
 
 @keyframes move-words {
-    0% {
-        left: 0;
-      }
-      50% {
-        left: 50%;
-      }
-      100% {
-        left: 0;    
-      }
+    from {
+        transform: translateX(-50%);
+    }
+    to {
+        transform: translateX(0);
+    }
   }

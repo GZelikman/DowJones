@@ -43,7 +43,7 @@ $(setInterval(function(){
             }
         }
         if (zaehler == 0){
-            document.getElementById("information").innerHTML = "Market Crash! Market Crash! Market Crash!";
+            document.getElementById("information").innerHTML = "Market Crash! Market Crash! Market Crash!Market Crash! Market Crash! Market Crash!Market Crash! Market Crash! Market Crash!Market Crash! Market Crash! Market Crash!Market Crash! Market Crash! Market Crash!Market Crash! Market Crash! Market Crash!Market Crash! Market Crash! Market Crash!Market Crash! Market Crash! Market Crash!Market Crash! Market Crash! Market Crash!Market Crash! Market Crash! Market Crash!";
         }
         document.getElementById("cocktail").innerHTML = cocktails;
         document.getElementById("beer").innerHTML = beer;

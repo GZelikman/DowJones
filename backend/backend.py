@@ -80,6 +80,8 @@ def randPriceChange():
 def isMarketCrash(data, amount):
     with open('backendSpeicher.json', 'r') as f:
         buyedDrinks = json.load(f)
+    if buyedDrinks["marketCrash"] == 1:
+        amount = 0
     buyedDrinks["buyedDrinks"] += amount
     if buyedDrinks["buyedDrinks"] >= 50:
         for i in data["drinks"]:
