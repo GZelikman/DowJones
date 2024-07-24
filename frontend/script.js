@@ -85,7 +85,7 @@ function showPopup(value1,value2) {
         }),
     }).done(function (response) {
         console.log("Got prices from Server");
-        var insert = '<img id="grapg" src="data:image/png;base64,' + response + '" />';
+        var insert = '<img id="graph" src="data:image/png;base64,' + response + '" /><br>How many do you want to buy?';
         Swal.fire({
             title: value1 + " - " + value2.toFixed(2) + "€",
             html: insert,
@@ -100,7 +100,7 @@ function showPopup(value1,value2) {
             showCloseButton: true,
             preConfirm: async (amount) => {
                 console.log(value1, value2.toFixed(2), amount);
-    
+                
                 $.ajax({
                     url: 'http://localhost:7999/buyDrinks',
                     type: 'post',

@@ -124,10 +124,12 @@ async def getPricesOfName(request: Request):
         for key in i:
             if key == name["drink"]:
                 xValues = i[key]
-                yValues = [9,8,7,6,5,4,3,2,1,0]
-                plt.plot(yValues, xValues)
+                plt.plot(xValues, color='red')
+                ax = plt.gca()
+                ax.get_xaxis().set_visible(False)
                 bio = io.BytesIO()
                 plt.savefig(bio, format="png")
+                plt.clf()
                 return Response(base64.b64encode(bio.getvalue()), media_type='image/png')
 
 @app.post("/buyDrinks")     
