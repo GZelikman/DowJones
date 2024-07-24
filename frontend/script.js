@@ -84,32 +84,8 @@ function showPopup(value1,value2) {
             "drink": String(value1),
         }),
     }).done(function (response) {
-        console.log("Got prices from Server", response);
-        const yValues = response
-        const xValues = [9,8,7,6,5,4,3,2,1,0]
-        console.log(yValues, xValues);
-        var test = new Chart("myChart", {
-            type: "line",
-            data: {
-              labels: xValues,
-              datasets: [{
-                fill: false,
-                lineTension: 0,
-                backgroundColor: "rgba(0,0,255,1.0)",
-                borderColor: "rgba(0,0,255,0.1)",
-                data: yValues
-              }]
-            },
-            options: {
-              legend: {display: false},
-              scales: {
-                yAxes: [{ticks: {min: 0, max:10}}],
-              }
-            }
-          });
-            var insert = document.createElement("canvas");
-            insert.id = "myChart";
-            insert.innerHTML = test;
+        console.log("Got prices from Server");
+        var insert = '<img id="grapg" src="data:image/png;base64,' + response + '" />';
         Swal.fire({
             title: value1 + " - " + value2.toFixed(2) + "€",
             html: insert,

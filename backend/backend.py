@@ -1,9 +1,12 @@
 import json
-from fastapi import FastAPI, Request
+from fastapi import FastAPI, Request, Response
 from starlette.middleware.cors import CORSMiddleware
 import threading, time
 import random
 import math
+import matplotlib.pyplot as plt
+import io
+import base64
 
 class reqthread(threading.Thread):
     def __init__(self,sleep):
@@ -120,9 +123,14 @@ async def getPricesOfName(request: Request):
     for i in prices["prices"]:
         for key in i:
             if key == name["drink"]:
-                return i[key]
+                xValues = i[key]
+                yValues = [9,8,7,6,5,4,3,2,1,0]
+                plt.plot(yValues, xValues)
+                bio = io.BytesIO()
+                plt.savefig(bio, format="png")
+                return Response(base64.b64encode(bio.getvalue()), media_type='image/png')
 
-@app.post("/buyDrinks")
+@app.post("/buyDrinks")     
 async def buyDrinks(request: Request):
     buying = await request.json()
     with open('data.json', 'r') as f:
