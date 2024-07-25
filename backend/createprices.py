@@ -15,7 +15,7 @@ with open('prices.json', 'r') as f2:
 
 for i in data["drinks"]:
     price = i["price"]
-    arr = [price, price, price, price, price, price, price, price,price, price]
+    arr = [price, price, price, price, price, price, price, price, price, price]
     prices["prices"].append({i["name"]:arr})
 
 with open('prices.json', 'w') as f2:

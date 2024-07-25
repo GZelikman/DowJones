@@ -15,6 +15,7 @@
 
 body{
     background-color: rgb(36, 36, 36);
+    overflow: hidden;
 }
 
 #h2cocktail{
@@ -128,7 +129,7 @@ li{
     white-space: nowrap;
     position: absolute;
     color: red;
-    animation: move-words 15s linear infinite;
+    animation: move-words 20s linear infinite;
     margin: 0;
 }
 
