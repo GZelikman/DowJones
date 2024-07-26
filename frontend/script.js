@@ -1,10 +1,14 @@
+function redirect(){
+    var number = document.getElementById("number").value;
+    window.location.href = "./index.html?tisch=" + number;
+}
+
 $(setInterval(function(){
     $.ajax({
         url: 'http://127.0.0.1:7999/',
         type: 'get',
     }).done(function (response) {
-        console.log("Api call worked", response);
-        console.log(response["drinks"].length);
+        console.log("Api get worked");
         cocktails = "";
         beer = "";
         shots = "";
@@ -21,7 +25,6 @@ $(setInterval(function(){
                 backspace += "&nbsp;";
             }
             drink = response["drinks"][i]["name"] + backspace;
-            console.log(drink)
             if (response["drinks"][i]["type"] == "cocktail"){
                 cocktails += "<li onClick=\"showPopup(\'" + response["drinks"][i]["name"] + "\'," + response["drinks"][i]["price"].toFixed(2) + ")\"><div data-browser=\"" + up + "\" >" + drink + "  <span class=\"" + color + "\">" + response["drinks"][i]["price"].toFixed(2) + "€</span></div></li>";
             }
@@ -77,6 +80,7 @@ var buyDrinks = function(value1,value2) {
 const inputValue = 1
 
 function showPopup(value1,value2) {
+    var tisch = document.URL.split('?')[1].split("=")[1]
     $.ajax({
         url: 'http://localhost:7999/getPricesOfName',
         type: 'post',
@@ -107,7 +111,8 @@ function showPopup(value1,value2) {
                     data: JSON.stringify({
                         "drink": String(value1),
                         "price": value2.toFixed(2),
-                        "amount": Number(amount)
+                        "amount": Number(amount),
+                        "tisch" : tisch
                     }),
                 }).done(function (response) {
                     console.log("Api call worked", response);

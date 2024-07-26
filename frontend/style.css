@@ -18,6 +18,12 @@ body{
     overflow: hidden;
 }
 
+#numberInput{
+    color: white;
+    background-color: rgb(36, 36, 36);
+    text-align: center;
+}
+
 #h2cocktail{
     grid-column-start: 1;
     grid-column-end: span 1;
