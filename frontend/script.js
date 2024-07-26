@@ -3,6 +3,21 @@ function redirect(){
     window.location.href = "./index.html?tisch=" + number;
 }
 
+function goebrr(value){
+    let number = document.getElementById("number").value;
+    if (number == 0){
+        console.log(number)
+        document.getElementById("number").value = value;
+    }
+    else{
+        document.getElementById("number").value = number + value;
+    }
+}
+
+function deleteInput(){
+    document.getElementById("number").value = 0
+}
+
 $(setInterval(function(){
     $.ajax({
         url: 'http://127.0.0.1:7999/',

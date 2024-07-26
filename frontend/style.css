@@ -18,10 +18,49 @@ body{
     overflow: hidden;
 }
 
+button{
+    font-size: 80px;
+    width: 15%;
+    margin: 0.5%;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+input[type=number]{
+    -moz-appearance: textfield;
+}
+
+#number{
+    width: 20%;
+    font-size: 60px;
+    cursor: not-allowed;
+    border: 2px solid white;
+    outline: none;
+    text-align: center;
+    background-color: rgb(36, 36, 36);
+    color: white;
+}
+
 #numberInput{
     color: white;
     background-color: rgb(36, 36, 36);
     text-align: center;
+    font-family: monospace, monospace;
+}
+
+#newbutton{
+    margin: 2%;
+    background:#fff;
+    border: 2px solid white;
+    color: black;
+    border-radius: 2px;
+    width: 20%;
+    font-size: 60px;
+    width: 150%;
 }
 
 #h2cocktail{
