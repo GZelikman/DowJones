@@ -97,8 +97,8 @@ def orders(drinks, price, amount, tisch):
     for i in data["Tische"]:
         if tisch in i:
             numberOrder = len(i[tisch]) +1
-            print(numberOrder, data["Tische"][tisch])
-            data["Tische"][tisch].append({numberOrder:{"orders":[drinks, price, amount]}})
+            print(numberOrder)
+            i[tisch].append({numberOrder:{"orders":[drinks, price, amount]}})
             break
         else:
             print("hi")
