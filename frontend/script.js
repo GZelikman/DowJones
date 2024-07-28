@@ -19,9 +19,13 @@ function deleteInput(){
 }
 
 $(setInterval(function(){
+    var tisch = document.URL.split('?')[1].split("=")[1]
     $.ajax({
         url: 'http://127.0.0.1:7999/',
         type: 'get',
+        data: JSON.stringify({
+            "tisch": tisch
+        }),
     }).done(function (response) {
         console.log("Api get worked");
         cocktails = "";

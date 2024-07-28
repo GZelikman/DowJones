@@ -91,6 +91,27 @@ def updatePriceArr(name, newPrice):
     with open('prices.json', 'w') as f:
         json.dump(prices, f)
 
+def orders(drinks, price, amount, tisch):
+    with open('tische.json', 'r') as f:
+        data = json.load(f)
+    for i in data["Tische"]:
+        if tisch in i:
+            numberOrder = len(i[tisch]) +1
+            print(numberOrder, data["Tische"][tisch])
+            data["Tische"][tisch].append({numberOrder:{"orders":[drinks, price, amount]}})
+            break
+        else:
+            print("hi")
+            arr = [drinks, price, amount]
+            data["Tische"].append({tisch:{"orders":arr}})
+            break
+    if data["Tische"] == []:
+        print("hi")
+        arr = [drinks, price, amount]
+        data["Tische"].append({tisch:[{1:{"orders":arr}}]})
+    with open('tische.json', 'w') as f:
+        json.dump(data, f)
+
 try:
     thread = reqthread(60)
     thread.daemon = True
@@ -147,6 +168,7 @@ async def buyDrinks(request: Request):
         elif i["type"] == typeDrink:
             updatePrices(i, (-0.10 * buying["amount"]))
     data = isMarketCrash(data, buying["amount"])
+    orders(buying["drink"], buying["price"], buying["amount"], buying["tisch"])
     with open('data.json', 'w') as f:
         json.dump(data, f)
     return data
