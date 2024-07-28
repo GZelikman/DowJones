@@ -97,11 +97,9 @@ def orders(drinks, price, amount, tisch):
     for i in data["Tische"]:
         if tisch in i:
             numberOrder = len(i[tisch]) +1
-            print(numberOrder)
             i[tisch].append({numberOrder:{"orders":[drinks, price, amount]}})
             break
         else:
-            print("hi")
             arr = [drinks, price, amount]
             data["Tische"].append({tisch:{"orders":arr}})
             break
@@ -133,6 +131,12 @@ app.add_middleware(
 @app.get("/")
 async def sendPrices():
     with open('data.json', 'r') as f:
+        data = json.load(f)
+    return data
+
+@app.get("/getOrders")
+async def sendOrders():
+    with open('tische.json','r') as f:
         data = json.load(f)
     return data
 
