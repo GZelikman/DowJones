@@ -10,10 +10,10 @@ $(setInterval(function(){
                 number = j;
             }
             if(response["Tische"][i][number].length > 0 ){
-                aktuelleTische += "<div id=\"tisch\"> Tisch Nr. " + number + " has " + response["Tische"][i][number].length + " Orders</div>";
+                aktuelleTische += "<div id=\"tisch\" onclick=\"showPopup(" + i + "," + number + ")\"> Tisch Nr. " + number + " has " + response["Tische"][i][number].length + " Orders</div>";
             }
             else{
-                aktuelleTische += "<div id=\"tisch\"> Tisch Nr. " + number + " has 1 Order</div>";
+                aktuelleTische += "<div id=\"tisch\" onclick=\"showPopup(" + i + "," + number + ")\"> Tisch Nr. " + number + " has 1 Order</div>";
             }
         }
         document.getElementById("Tische").innerHTML = aktuelleTische;
@@ -21,3 +21,7 @@ $(setInterval(function(){
         console.log(error);
     });
 }, 2000));
+
+function showPopup(value1,value2) {
+    console.log(value1, value2);
+}
