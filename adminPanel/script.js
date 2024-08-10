@@ -10,10 +10,10 @@ $(setInterval(function(){
                 number = j;
             }
             if(response["Tische"][i][number].length > 0 ){
-                aktuelleTische += "<div id=\"tisch\" onclick=\"showPopup(" + i + "," + number + ")\"> Tisch Nr. " + number + " has " + response["Tische"][i][number].length + " Orders</div>";
+                aktuelleTische += "<img id=\"tischpic\" src=\"images/icons8-table-96.png\" width=\"50\" height=\"50\"><div id=\"tisch\" onclick=\"showPopup(" + i + "," + number + ")\">" + number + " has " + response["Tische"][i][number].length + " Orders</div><br>";
             }
             else{
-                aktuelleTische += "<div id=\"tisch\" onclick=\"showPopup(" + i + "," + number + ")\"> Tisch Nr. " + number + " has 1 Order</div>";
+                aktuelleTische += "<div id=\"tisch\" onclick=\"showPopup(" + i + "," + number + ")\"> Tisch Nr. " + number + " has 1 Order</div><br>";
             }
         }
         document.getElementById("Tische").innerHTML = aktuelleTische;
