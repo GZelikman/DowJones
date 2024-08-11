@@ -23,5 +23,29 @@ $(setInterval(function(){
 }, 2000));
 
 function showPopup(value1,value2) {
-    console.log(value1, value2);
+    $.ajax({
+        url: 'http://127.0.0.1:7999/getOrders',
+        type: 'get',
+    }).done(function (response) {
+        if (response["Tische"][value1][value2].length > 0){
+            return;
+        }
+        else{
+            var amount = response["Tische"][value1][value2]["orders"][2];
+            var price = response["Tische"][value1][value2]["orders"][1];
+            var drink = response["Tische"][value1][value2]["orders"][0];
+            var insert = "Getränk: " + drink + "<br>Preis: " + price + "€<br>Anzahl: " + amount;
+        }
+        Swal.fire({
+            title: amount + " - " + drink,
+            html: insert,
+            showCancelButton: true,
+            confirmButtonText: "Fertig",
+            showCloseButton: true,
+            preConfirm: async (amount) => {
+            }
+        });
+    }).fail(function (error) {
+        console.log(error);
+    })
 }
