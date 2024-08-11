@@ -32,18 +32,26 @@ a:hover{
 }
 
 #Tische{
+    position: relative;
     display:block;
     text-align: left;
     align-items: center;
-    width: 50%;
+    width: 40%;
     height: 60px;
-    margin-left: 25%;
+    margin-left:30%;
 }
 
-#tischimg{
-    display: absolute;
-    padding: 0;
-    margin: 0;
+#tischpic{
+    float: left;
+}
+
+#number{
+    margin-top: -19px;
+    margin-left: 11px;
+}
+
+#orders{
+    text-align: right;
 }
 
 #tisch{
