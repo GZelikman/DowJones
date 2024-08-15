@@ -30,3 +30,35 @@ a:hover{
     background-color: rgb(206, 221, 197);
     border: 2px solid rgb(206, 221, 197);
 }
+
+#Tische{
+    position: relative;
+    display:block;
+    text-align: left;
+    align-items: center;
+    width: 40%;
+    height: 60px;
+    margin-left:30%;
+}
+
+#tischpic{
+    float: left;
+}
+
+#number{
+    margin-top: -19px;
+    margin-left: 11px;
+}
+
+#orders{
+    text-align: right;
+}
+
+#tisch{
+    flex: 1;
+    padding: 20px;
+    margin-top: 5px;
+    border: 2px solid rgb(161, 232, 117);
+    background-color: rgb(161, 232, 117);
+    font-size: 16px;
+}
