@@ -7,6 +7,7 @@ import math
 import matplotlib.pyplot as plt
 import io
 import base64
+import ast
 
 class reqthread(threading.Thread):
     def __init__(self,sleep):
@@ -174,5 +175,19 @@ async def buyDrinks(request: Request):
     data = isMarketCrash(data, buying["amount"])
     orders(buying["drink"], buying["price"], buying["amount"], buying["tisch"])
     with open('data.json', 'w') as f:
+        json.dump(data, f)
+    return data
+
+@app.post("/drinkReady")
+async def drinkReady(request: Request):
+    ready = await request.json()
+    with open('tische.json', 'r') as f:
+        data = json.load(f)
+    for i in data["Tische"]:
+        print(next(iter(ast.literal_eval(i))), ready["tisch"])
+        #if ready["tisch"] in i:
+        #        i.remove()
+        #        break
+    with open('tische.json', 'w') as f:
         json.dump(data, f)
     return data
