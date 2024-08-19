@@ -47,20 +47,34 @@ function showPopup(value1,value2) {
             title: "new Order",
             html: insert,
             showCancelButton: true,
-            cancelButtonText: "Stornieren",
             confirmButtonText: "Fertig",
+            denyButtonText: "Stornieren",
             showCloseButton: true,
-            preConfirm: async (amount) => {
-                $.ajax({
-                    url: 'http://127.0.0.1:7999/drinkReady',
-                    type: 'post',
-                    data: JSON.stringify({
-                        "tisch": value2,
-                    }),
-                }).fail(function (error){
-                    console.log(error);
-                })
-            }
+            showDenyButton: true,
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        url: 'http://127.0.0.1:7999/drinkReady',
+                        type: 'post',
+                        data: JSON.stringify({
+                            "tisch": value2,
+                        }),
+                    }).fail(function (error){
+                        console.log(error);
+                    })
+                }
+                else if (result.isDenied) {
+                    $.ajax({
+                        url: 'http://127.0.0.1:7999/cancelDrink',
+                        type: 'post',
+                        data: JSON.stringify({
+                            "tisch": value2,
+                        }),
+                    }).fail(function (error){
+                        console.log(error);
+                    })
+                }
+
         });
     }).fail(function (error) {
         console.log(error);

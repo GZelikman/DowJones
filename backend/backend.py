@@ -183,11 +183,21 @@ async def drinkReady(request: Request):
     ready = await request.json()
     with open('tische.json', 'r') as f:
         data = json.load(f)
-    for i in data["Tische"]:
-        print(next(iter(ast.literal_eval(i))), ready["tisch"])
-        #if ready["tisch"] in i:
-        #        i.remove()
-        #        break
-    with open('tische.json', 'w') as f:
-        json.dump(data, f)
+    for i in range(len(data["Tische"])):
+        if int(list(data["Tische"][i].keys())[0]) == int(ready["tisch"]):
+            del data["Tische"][i]
+            with open('tische.json', 'w') as f:
+                json.dump(data, f)
+    return data
+
+@app.post("/cancelDrink")
+async def cancelDrink(request: Request):
+    ready = await request.json()
+    with open('tische.json', 'r') as f:
+        data = json.load(f)
+    for i in range(len(data["Tische"])):
+        if int(list(data["Tische"][i].keys())[0]) == int(ready["tisch"]):
+            del data["Tische"][i]
+            with open('tische.json', 'w') as f:
+                json.dump(data, f)
     return data
