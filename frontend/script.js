@@ -27,7 +27,7 @@ $(setInterval(function(){
             "tisch": tisch
         }),
     }).done(function (response) {
-        console.log("Api get worked");
+        console.log("Api get call worked");
         cocktails = "";
         beer = "";
         shots = "";
