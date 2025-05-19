@@ -1,6 +1,7 @@
 # DowJones
 
 A bar where drink prices fluctuate dynamically—driven by real-time demand plus a dash of randomness. Inspired by Barcelona’s “Dow Jones Bar,” this repository recreates the idea from scratch.
+
 Tech Stack:
 
     Frontend: JavaScript
